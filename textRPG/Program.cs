@@ -224,21 +224,21 @@ namespace textRPG
             //기존 장착된 아이템 해제
             if (item.Type == 0)
             {
-                if (equippedWeapon.HasValue)
+                if (equippedWeapon.HasValue) //무기장착
                 {
                     Console.WriteLine($"\n\n{equippedWeapon.Value.Name}이(가) 해제되었습니다.");
                     equippedWeapon = null;
                 }
-                equippedWeapon = item; //새무기장착
+                equippedWeapon = item; 
             }
-            else if (item.Type == 1) 
+            else if (item.Type == 1) //방어구장착
             {
                 if (equippedArmor.HasValue)
                 {
                     Console.WriteLine($"\n\n{equippedArmor.Value.Name}이(가) 해제되었습니다.");
                     equippedArmor = null;
                 }
-                equippedArmor = item;
+                equippedArmor = item; 
             }
 
             Console.WriteLine($"\n\n{item.Name}을(를) 장착했씁니다.");
@@ -331,7 +331,7 @@ namespace textRPG
             {
                 Item item = storeItems[i];
                 string purchaseMark = storeItems[i].IsPurchased ? "(구매완료)" : ""; //구매상태표시
-                Console.WriteLine($"{i + 1}. {storeItems[i].Name}\t | {storeItems[i].Information} | 공격력 : {storeItems[i].Attack} | 방어력 : {storeItems[i].Deffence} | 가격 : {storeItems[i].Gold}G");
+                Console.WriteLine($"{i + 1}. {storeItems[i].Name}\t | {storeItems[i].Information} | 공격력 : {storeItems[i].Attack} | 방어력 : {storeItems[i].Deffence} | 가격 : {storeItems[i].Gold}G | {purchaseMark}");
             }
 
             Console.WriteLine("0. 구매 취소 (돌아가기)");
