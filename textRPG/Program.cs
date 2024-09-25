@@ -154,8 +154,8 @@ namespace textRPG
             int bonusAtk = EquipAtk();
             int bonusDef = EquipDef();
 
-            Console.WriteLine("공격력 \t: " + (player.Attack+bonusAtk));
-            Console.WriteLine("방어력 \t: " + (player.Deffence+bonusDef));
+            Console.WriteLine("공격력 \t: " + (player.Attack+bonusAtk) + $"(+{bonusAtk})");
+            Console.WriteLine("방어력 \t: " + (player.Deffence+bonusDef) + $"(+{bonusDef})");
             Console.WriteLine("체력 \t: " + player.Health);
             Console.WriteLine("GOLD \t: " + player.Gold);
             Console.WriteLine("\n0. 나가기");
