@@ -88,6 +88,7 @@ namespace textRPG
         {
             //콘솔 창 높이 설정
             Console.WindowHeight = 40;
+
             //초기플레이어
             player = new Character("Unity6기생_김아무개", 1, 10, 5, 100, 1500);
             
@@ -150,7 +151,8 @@ namespace textRPG
             Console.WriteLine("\n\n============================================");
             Console.WriteLine("\n\nLEVEL: " + player.Level.ToString("00"));
             Console.WriteLine(player.Name);
-
+            
+            //장착 아이템에 따른 추가 스탯설정
             int bonusAtk = EquipAtk();
             int bonusDef = EquipDef();
 
@@ -223,7 +225,7 @@ namespace textRPG
                 return;
             }
 
-            //기존 장착된 아이템 해제
+            //기존 장착된 아이템 해제 및 선택아이템 장착
             if (item.Type == 0)
             {
                 if (equippedWeapon.HasValue) //무기장착
@@ -248,7 +250,7 @@ namespace textRPG
             CheckInput(0, 0);
             InventoryMenu();
         }
-        //장착된 아이템의 효과 반영
+        //장착된 아이템의 스탯효과 반영
         private static int EquipAtk() => equippedWeapon?.Attack ?? 0; // 장착된 무기 공격력 리턴, 없으면0
         private static int EquipDef() => equippedArmor?.Deffence ?? 0; // 장착된 옷 방어력 리턴, 없으면0
         //상점메뉴
@@ -354,9 +356,10 @@ namespace textRPG
         private static void SellItem(int index)
         {
             Item item = inventoryItems[index];
-            int sellPrice = (int)Math.Floor(item.Gold * 0.85f);
+
+            int sellPrice = (int)Math.Floor(item.Gold * 0.85f); //85%가격으로 판매가 설정
             player.Gold += sellPrice;
-            inventoryItems.RemoveAt(index);
+            inventoryItems.RemoveAt(index); //판매시 인벤토리에서 해당아이템 삭제
 
             Console.WriteLine($"\n\n{item.Name}을(를) {sellPrice}에 판매했습니다");
             Console.WriteLine("\n0. 나가기");
@@ -411,7 +414,7 @@ namespace textRPG
             switch (choice)
             {
                 case 1:
-                    EnterDungeon(5, 1000);
+                    EnterDungeon(5, 1000); //(권장방어력, 기본보상)
                     break;
                 case 2:
                     EnterDungeon(10, 1700);
@@ -433,7 +436,7 @@ namespace textRPG
             Console.Clear();
             Console.WriteLine("\n\n던전던전던전진입진입진입");
 
-            if (player.Deffence < recommendDef)
+            if (player.Deffence < recommendDef) //권장방어력 미달 시
             {
                 if (random.NextDouble() < 0.4) //40%확률로 던전 실패 
                 {
@@ -457,9 +460,10 @@ namespace textRPG
             //던전클리어
             Console.WriteLine("경)공략 성공!!!(축");
 
-            player.DunClear++;
+            player.DunClear++; //레벨업로직을 위한 클리어횟수증가
             LevelUp();
 
+            //던전 성공시 권장방어력과 플레이어방어력 차이에 따른 hp차감범위설정
             int defenseGap = Math.Abs(player.Deffence - recommendDef); //절대값으로처리
 
             int adjustFactor = player.Deffence < recommendDef ? defenseGap : -defenseGap; //이제 음수표현 가능
@@ -470,11 +474,11 @@ namespace textRPG
 
             player.Health -= totalLoss;
 
-            if (player.Health < 0) player.Health = 0;
+            if (player.Health < 0) player.Health = 0; //0되면 게임오버를 만들까했지만 그냥 패스했음
 
             Console.WriteLine($"\n\n남은 체력 : {player.Health}");
 
-            //골드보상
+            //플레이어 공격력에 따른 던전 성공 시 추가골드보상설정
             int addiGoldPercent = random.Next(player.Attack, player.Attack * 2 + 1);
             int additionalGold = baseGoldReward * addiGoldPercent / 100;
             int totalReward = baseGoldReward + additionalGold;
