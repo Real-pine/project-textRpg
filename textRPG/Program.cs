@@ -86,6 +86,8 @@ namespace textRPG
         //메인
         static void Main(string[] args)
         {
+            //콘솔 창 높이 설정
+            Console.WindowHeight = 40;
             //초기플레이어
             player = new Character("Unity6기생_김아무개", 1, 10, 5, 100, 1500);
             
